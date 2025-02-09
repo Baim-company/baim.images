@@ -111,12 +111,11 @@ http {
 }
 ```
 
-* Нам нужно открыть 
-** не это: 
+* Нам нужно открыть не это: 
 ```
 sudo nano /etc/nginx/sites-available/default
 ```
-** а это:
+* А это:
 ```
 sudo nano /etc/nginx/sites-available/myconfig
 ```
