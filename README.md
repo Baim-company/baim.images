@@ -1,4 +1,12 @@
 # Настройка доступа к изображениям через Nginx
+## Как сделать так чтобы Картинки были видны из вне сервиса и каждый мог их видеть по ссылке домена ?
+* Для этого нам нужно открыть доступ к папке где находятся картинки и также  создать ngnx file где пропишем путь к нашей директории на сервере и укажем по какому путь мы должны обращаться извне сервера. Также ngnx нам нужен чтобы обращаться к фронтенду не через порт 3000 а напряму к IP
+
+* Начнем :
+### 1)Откроем доступ к папке где находятся файлы
+### 2)Создадим и настроем файл ngnx
+------------
+
 
 ## 1. Открываем доступ к папке с изображениями
 
@@ -78,12 +86,20 @@ sudo nano /etc/nginx/sites-available/default
 ```
 server {
     listen 80;
-    server_name example.com;
+    server_name 20.200.120.11;
 
-    location /files/ {
-        root /home/azureuser/home/baim;
+    location / {
+        proxy_pass http://localhost:3000;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+    }
+
+    location /app/images/default/ {
+        alias /home/azureuser/home/baim/files/;
         autoindex on;
-        index index.html;
     }
 }
 ```
